@@ -7,9 +7,9 @@ import torch
 from tqdm import tqdm
 def load_data(edges_type='knn', n_neighbors=10):
     """load data and create x_train, y_train, x_test, y_test for xgboost"""
-    node_features = pd.read_csv('/content/nodes_df.csv') #shape : (n_nodes, n_features)
-    node_geom = gpd.read_file('/content/buffered_stations.shp')
-    ts = pd.read_csv('/content/ts_dt_hourly.csv')
+    node_features = pd.read_csv('nodes_df.csv') #shape : (n_nodes, n_features)
+    node_geom = gpd.read_file('buffered_stations.shp')
+    ts = pd.read_csv('ts_dt_hourly.csv')
     ts = ts.sort_values(by='datetime').reset_index(drop=True)
     node_features = node_features[node_features['Log_Nr'] != 98]
 
@@ -23,9 +23,9 @@ def load_data(edges_type='knn', n_neighbors=10):
     columns_to_keep = ['Log_'+ str(i) for i in node_features['Log_Nr'].unique()]
     #dropping the old index column
     ts.drop(columns=[ts.columns[0]], inplace=True)
-    ref_temp_hourly = pd.read_csv('/content/ref_temp_hourly.csv')
+    ref_temp_hourly = pd.read_csv('ref_temp_hourly.csv')
     ref_temp_hourly.sort_values(by='datetime', inplace=True)
-    weather_data_hourly = pd.read_csv('/content/weather_data.csv')
+    weather_data_hourly = pd.read_csv('weather_data.csv')
     weather_data_hourly.rename(columns={'time':'datetime'}, inplace=True)
     #fill missing values with the median of the row
     train_mask = ~ts[columns_to_keep].isna().to_numpy()
